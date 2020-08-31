@@ -3,11 +3,13 @@ from tkinter import *
 import RPi.GPIO as GPIO
 from time import sleep
 from picamera import PiCamera
+
 try:
     import Image
 except ImportError:
     from PIL import Image
 from pytesseract import *
+
 
 def play_read_instructions(file):
     from pygame import mixer
@@ -15,14 +17,13 @@ def play_read_instructions(file):
     mixer.music.load(file)
     mixer.music.play()
 
-def no_motion_for_read():
-    
 
+def no_motion_for_read():
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(4, GPIO.IN)
-    
-    num_of_detections = 2 # count down to zero to report no movement
-    
+
+    num_of_detections = 2  # count down to zero to report no movement
+
     while num_of_detections > 0:
         k = 0
         for i in range(800000):
@@ -31,21 +32,22 @@ def no_motion_for_read():
             num_of_detections -= 1
     return True
 
+
 def snap_picture():
     camera = PiCamera()
     sleep(5)
-    camera.color_effects = (128,128)
+    camera.color_effects = (128, 128)
     camera.capture('image.jpg')
     camera.stop_preview()
 
+
 def read_captured_text(read_text):
-   myob=gTTS(text=read_text,lang='en',slow=False)
-   myob.save('read_text.mp3')
-   play_read_instructions('read_text.mp3')
+    myob = gTTS(text=read_text, lang='en', slow=False)
+    myob.save('read_text.mp3')
+    play_read_instructions('read_text.mp3')
 
 
-
-def read_mode():
+def main():
     print('When ready, place text in front of camera')
     play_read_instructions("read_instructions.mp3")
     error_count = 0
@@ -69,28 +71,3 @@ def read_mode():
     else:
         sleep(2)
         read_captured_text(text)
-    
-
-
-
-
-
-read_mode()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

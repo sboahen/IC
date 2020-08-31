@@ -1,4 +1,4 @@
-from gtts import gTTS
+from read_mode import main as read_mode_main
 from pygame import mixer
 
 mixer.init()
@@ -9,7 +9,7 @@ mixer.music.play()
 while True:
     k = input()
     if k == '1':
-        import read_mode
+        read_mode_main()
         break
     elif k == '2':
         import active_mode
